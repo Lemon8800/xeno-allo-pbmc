@@ -1,0 +1,44 @@
+# macOS
+.DS_Store
+._*
+
+# Word / Office lock files
+~$*
+
+# Jupyter
+.ipynb_checkpoints/
+*.nbconvert.ipynb
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+.ipython/
+.pytest_cache/
+.Rhistory
+.RData
+.Rproj.user/
+
+# Data and large intermediates (not distributed with this repository)
+*.h5ad
+*.h5
+*.loom
+*.rds
+*.RDS
+*.soft
+*.soft.gz
+data/
+DATA/
+raw/
+processed/
+
+# Figure output directories
+figures/
+outputs/
+
+# Editor
+.vscode/
+.idea/
+*.swp

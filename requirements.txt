@@ -1,0 +1,46 @@
+# Python 3.10.19
+# Versions are not pinned: the environment was assembled over several months
+# and exact builds were not recorded. Install, then freeze if you need an
+# exact reproduction (pip freeze > requirements.lock.txt).
+
+# core single-cell
+scanpy
+anndata
+scvi-tools
+scib
+harmonypy
+pertpy
+
+# analysis toolkit used throughout (QC, plotting, bulk DE, trajectory, CCC)
+omicverse
+
+# figure-specific
+adjustText
+annoy
+matplotlib
+seaborn
+numpy
+pandas
+scipy
+scikit-learn
+
+# Fig. 2F companion script (R) uses: tidyverse, RColorBrewer, ggrepel
+
+# Fig. 4: SCENIC + trajectory + in silico perturbation
+celloracle
+pcurvepy2
+
+# Fig. 5: cell-cell communication
+cellphonedb
+ktplotspy
+
+# Fig. 6: ligand activity
+nichenetpy
+
+# Fig. 3: temporal clustering
+pymfuzz
+pymn
+
+# gene-set scoring / signature tools
+pySTIM
+pyucell
