@@ -62,24 +62,48 @@ available from the NicheNet distribution.
 
 ---
 
+## Execution order and state dependencies
+
+The notebooks are not independent. `02` reads its input object directly, but
+`03` continues from objects (`adata_mono`, `adata_pf4`) left in memory by `02`,
+and `04` expects a monocyte object loaded into `adata_mono2`. In practice they
+were run as one sequence: `01` → `02` → `03` → `04`, with `05` and `06` run as
+separate sessions after their input objects had been written to disk.
+
+| Notebook | Starts from |
+|---|---|
+| `01_Fig1_S1` | reads the two raw `h5ad` files (see below) |
+| `02_Fig2` | reads `20260911Allo_Xeno_PBMC.h5ad`; leaves `adata_mono` in memory |
+| `03_Fig3` | continues from `02` (`adata_mono`) |
+| `04_Fig4_S3` | reads the monocyte object into `adata_mono2` |
+| `05_Fig5_S4` | reads `20260917Xeno_Allo.h5ad` and `adata_mono.h5ad` |
+| `06_Fig6` | reads `adata_xeno_pf4_major.h5ad` and `adata_allo_pf4_major.h5ad` |
+
 ## Required edits before running
 
-The notebooks were developed on an internal server, and absolute paths are
-retained verbatim so that the code corresponds exactly to what was executed.
-They must be changed before the notebooks will run elsewhere. Search for and
-replace the following:
+The notebooks were developed on an internal server and correspond exactly to
+what was executed. Absolute and working-directory paths were left as they were,
+and several working-directory strings were blanked to empty strings (`""`)
+before publication. All of them must be set before the notebooks will run
+elsewhere.
 
-| Path | Where |
-|---|---|
-| `/20260909GSE2Xeno_GK.h5ad`, `/20260909AllO_PBMC.h5ad`, `/20260911Allo_Xeno_PBMC.h5ad` | `01`, `02`, `03` — data objects at filesystem root |
-| `/data/zdh/ZDH_Spatial/Kidney_Spatial_Project/ceshi/Figure/20260922` | `03`, `06`, `02_Fig2F.R` — working/figure output directory |
-| `/data/zdh/ZDH_Spatial/Python包` | `04`, `06` — SCENIC resources (hg38 motif databases) and NicheNet model binaries |
-| `/scenic/cellphonedb.zip` | `05` — CellPhoneDB database archive |
+| Literal | Where | Meaning |
+|---|---|---|
+| `os.chdir("")` | `01`, `02`, `04`, `05` | working directory |
+| `save_dir=""` (default of `save_fig`) | `01`, `02`, `04`, `05` | figure output directory |
+| `SAVE_DIR = ""` | `04` (CellOracle cells), `03` (`/20260922`) | figure/table output directory |
+| `/20260909GSE2Xeno_GK.h5ad`, `/20260909AllO_PBMC.h5ad` | `01` | raw objects, at filesystem root |
+| `/20260911Allo_Xeno_PBMC.h5ad` | `02` | merged object, at filesystem root |
+| `ov.read("")` | `04` | monocyte object |
+| `20260917Xeno_Allo.h5ad`, `adata_mono.h5ad` (relative) | `05` | input objects |
+| `scenic/cellphonedb.zip`, `/scenic/cellphonedb.zip` | `05` | CellPhoneDB database archive |
+| `/data/zdh/ZDH_Spatial/Python包` | `04`, `06` | SCENIC resources (hg38 motif databases) and NicheNet model binaries |
+| `/data/zdh/ZDH_Spatial/Kidney_Spatial_Project/ceshi/Figure/20260922` | `06`, `02_Fig2F.R` | working/figure output directory |
 
 The simplest approach is to define one variable at the top of each notebook
 (for example `DATA_DIR = "/path/to/data"`) and replace the literals below it.
-Figure-saving helpers at the top of each notebook point at the output directory
-listed above; change that single string to redirect all writes.
+`save_fig` and `SAVE_DIR` control where figures and intermediate tables are
+written; setting those two strings redirects almost all output.
 
 ---
 
